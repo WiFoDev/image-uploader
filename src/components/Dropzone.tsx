@@ -1,16 +1,18 @@
 import Image from "next/image";
-import React from "react";
+import React, {FC} from "react";
 import {useDropzone} from "react-dropzone";
 
 import imagePic from "@/assets/image.svg";
 
-export const Dropzone = () => {
-  const {getRootProps, getInputProps, acceptedFiles, open} =
-    useDropzone({
-      accept: {"image/*": [".png", ".gif", ".jpeg", ".jpg"]},
-    });
+type DropzoneProps = {
+  onDrop: (acceptedFiles: File[]) => void;
+};
 
-  console.log(acceptedFiles);
+export const Dropzone: FC<DropzoneProps> = ({onDrop}) => {
+  const {getRootProps, getInputProps, open} = useDropzone({
+    accept: {"image/*": [".png", ".gif", ".jpeg", ".jpg"]},
+    onDrop,
+  });
 
   return (
     <>
