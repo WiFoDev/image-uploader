@@ -2,7 +2,7 @@ import type {NextPage} from "next";
 
 import {useCallback} from "react";
 
-import {Dropzone} from "@/components";
+import {Dropzone, Uploading} from "@/components";
 
 const Home: NextPage = () => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
