@@ -1,11 +1,14 @@
 import type {NextPage} from "next";
 
-import {useCallback} from "react";
+import {useCallback, useState} from "react";
 
 import {Dropzone, Uploading} from "@/components";
 
 const Home: NextPage = () => {
+  const [isUploading, setIsUploading] = useState(false);
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
+    setIsUploading(true);
     acceptedFiles.forEach((file) => {
       const formData = new FormData();
 
@@ -15,9 +18,14 @@ const Home: NextPage = () => {
         body: formData,
       })
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then((data) => {
+          console.log(data);
+          setIsUploading(false);
+        });
     });
   }, []);
+
+  if (isUploading) return <Uploading />;
 
   return (
     <section className="w-[25rem] h-[29rem] rounded-xl shadow-slate-400/50 shadow-outer px-8 py-9 flex flex-col items-center gap-4">
