@@ -5,8 +5,6 @@ import nc from "next-connect";
 import multer from "multer";
 import cors from "cors";
 
-import {removeFile} from "@/server/utils/removeLocalFile";
-
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -27,12 +25,7 @@ const apiRoute = nc<NextApiRequest, NextApiResponse>({
   },
 });
 
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: "./public/images",
-    filename: (req, file, cb) => cb(null, file.originalname),
-  }),
-});
+const upload = multer({storage: multer.diskStorage({})});
 
 apiRoute.use(cors());
 
@@ -49,18 +42,19 @@ apiRoute.post<ExtendedRequest>(async (req, res) => {
     overwrite: true,
   };
 
+  if (!req.file)
+    return res
+      .status(401)
+      .json({error: "Bad request, missing file parameter"});
+
   try {
     // Upload the image
-    const result = await cloudinary.uploader.upload(
-      `./public/images/${req.file?.originalname}`,
+    const upload = await cloudinary.uploader.upload(
+      req.file.path,
       options,
     );
 
-    removeFile(req.file?.originalname as string);
-
-    return res
-      .status(200)
-      .json({success: true, imageURL: result.secure_url});
+    return res.json({success: true, imageURL: upload?.secure_url});
   } catch (error) {
     console.error(error);
 
