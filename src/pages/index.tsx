@@ -22,6 +22,9 @@ const Home: NextPage = () => {
       fetch("https://image-uploader-phi-six.vercel.app/api/upload", {
         method: "POST",
         body: formData,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
       })
         .then((res) => res.json())
         .then(({imageURL}) => {
