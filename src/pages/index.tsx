@@ -39,7 +39,7 @@ const Home: NextPage = () => {
         <Dropzone onDrop={onDrop} />
         <p>{imageUrl}</p>
       </section>
-      <SuccessCard />
+      <SuccessCard imageURL="https://res.cloudinary.com/dtvrsyudu/image/upload/v1668656418/airplane-logo.png" />
     </>
   );
 };

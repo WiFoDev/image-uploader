@@ -1,9 +1,16 @@
 import Image from "next/image";
-import React from "react";
+import React, {FC} from "react";
 
-import airplaneIMG from "@/assets/airplane-logo.png";
+interface SuccessCardProps {
+  imageURL?: string;
+}
+//35
 
-export const SuccessCard = () => {
+export const SuccessCard: FC<SuccessCardProps> = ({imageURL}) => {
+  const copyToClipboardHandler = () => {
+    navigator.clipboard.writeText(imageURL as string);
+  };
+
   return (
     <section className="absolute left-10 w-[25rem] rounded-xl shadow-slate-400/50 shadow-outer px-8 py-9 flex flex-col items-center gap-4">
       <div className="flex items-center justify-center w-12 h-12 p-2 mx-auto bg-green-100 rounded-full dark:bg-green-900">
@@ -25,15 +32,19 @@ export const SuccessCard = () => {
       <div className="overflow-hidden bg-[#F6F8FB] rounded-xl w-full h-[13.75rem] my-3.5">
         <div className="relative w-full h-full">
           <Image
+            priority
             alt="Image representation"
             layout="fill"
-            src={airplaneIMG}
+            src={imageURL as string}
           />
         </div>
       </div>
       <div className="relative bg-[#F6F8FB] text-background w-full rounded p-3 text-xs">
-        https://courses.kevinpowell.co/view...
-        <button className="rounded bg-[#2F80ED] absolute text-white h-[96%] grid place-items-center px-4 right-[1px] top-[1px]">
+        {imageURL}
+        <button
+          className="rounded bg-[#2F80ED] absolute text-white h-[96%] grid place-items-center px-4 right-[1px] top-[1px]"
+          onClick={copyToClipboardHandler}
+        >
           Copy Link
         </button>
       </div>
