@@ -23,18 +23,20 @@ module.exports = {
         example: "url('../assets/brush.png')",
       },
       keyframes: {
-        slideIn: {
+        fadeInDown: {
           "0%": {
-            transform: "translate3d(100%, 0, 0)",
+            opacity: 0,
+            transform: "translate3d(0, -100%, 0)",
           },
 
           "100%": {
+            opacity: 1,
             transform: "translate3d(0, 0, 0)",
           },
         },
       },
       animation: {
-        "slide-in-right": "slideIn 0.2s ease-in",
+        "fade-in-down": "fadeInDown 0.5s ease-in",
       },
       boxShadow: {
         outer: "0px 4px 12px rgba(0, 0, 0, 0.1)",

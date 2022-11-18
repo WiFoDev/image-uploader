@@ -1,18 +1,35 @@
 import Image from "next/image";
-import React, {FC} from "react";
+import React, {FC, useEffect, useState} from "react";
 
 interface SuccessCardProps {
   imageURL?: string;
 }
 //35
 
+const urlShortener = (url: string): string => {
+  return `${url.slice(0, 33)}...`;
+};
+
 export const SuccessCard: FC<SuccessCardProps> = ({imageURL}) => {
+  const [copied, setCopied] = useState(false);
+
   const copyToClipboardHandler = () => {
     navigator.clipboard.writeText(imageURL as string);
+    setCopied(true);
   };
 
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    if (copied) {
+      timeout = setTimeout(() => setCopied(false), 2000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [copied]);
+
   return (
-    <section className="absolute left-10 w-[25rem] rounded-xl shadow-slate-400/50 shadow-outer px-8 py-9 flex flex-col items-center gap-4">
+    <section className="w-[25rem] rounded-xl shadow-slate-400/50 shadow-outer px-8 py-9 flex flex-col items-center gap-4">
       <div className="flex items-center justify-center w-12 h-12 p-2 mx-auto bg-green-100 rounded-full dark:bg-green-900">
         <svg
           aria-hidden="true"
@@ -29,7 +46,10 @@ export const SuccessCard: FC<SuccessCardProps> = ({imageURL}) => {
         </svg>
       </div>
       <h1>Uploaded Successfully!</h1>
-      <div className="overflow-hidden bg-[#F6F8FB] rounded-xl w-full h-[13.75rem] my-3.5">
+      <div
+        className="overflow-hidden bg-[#F6F8FB] rounded-xl w-full h-[13.75rem] my-3.5 cursor-pointer"
+        onClick={copyToClipboardHandler}
+      >
         <div className="relative w-full h-full">
           <Image
             priority
@@ -39,14 +59,21 @@ export const SuccessCard: FC<SuccessCardProps> = ({imageURL}) => {
           />
         </div>
       </div>
-      <div className="relative bg-[#F6F8FB] text-background w-full rounded p-3 text-xs">
-        {imageURL}
+      <div className="relative z-20 bg-[#F6F8FB] text-background w-full rounded p-3 text-xs">
+        {urlShortener(imageURL as string)}
         <button
           className="rounded bg-[#2F80ED] absolute text-white h-[96%] grid place-items-center px-4 right-[1px] top-[1px]"
           onClick={copyToClipboardHandler}
         >
           Copy Link
         </button>
+      </div>
+      <div className="h-8">
+        {copied && (
+          <div className="px-1 text-sm border-2 rounded animate-fade-in-down">
+            Copied!
+          </div>
+        )}
       </div>
     </section>
   );

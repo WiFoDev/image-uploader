@@ -7,7 +7,7 @@ import {SuccessCard} from "@/components/SuccessCard";
 
 const Home: NextPage = () => {
   const [isUploading, setIsUploading] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState<string>();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setIsUploading(true);
@@ -28,6 +28,7 @@ const Home: NextPage = () => {
   }, []);
 
   if (isUploading) return <Uploading />;
+  if (imageUrl) return <SuccessCard imageURL={imageUrl} />;
 
   return (
     <>
@@ -39,7 +40,6 @@ const Home: NextPage = () => {
         <Dropzone onDrop={onDrop} />
         <p>{imageUrl}</p>
       </section>
-      <SuccessCard imageURL="https://res.cloudinary.com/dtvrsyudu/image/upload/v1668656418/airplane-logo.png" />
     </>
   );
 };
