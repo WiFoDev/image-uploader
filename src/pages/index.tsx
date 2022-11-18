@@ -9,6 +9,10 @@ const Home: NextPage = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
 
+  const resetPageState = () => {
+    setImageUrl(undefined);
+  };
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setIsUploading(true);
     acceptedFiles.forEach((file) => {
@@ -28,7 +32,10 @@ const Home: NextPage = () => {
   }, []);
 
   if (isUploading) return <Uploading />;
-  if (imageUrl) return <SuccessCard imageURL={imageUrl} />;
+  if (imageUrl)
+    return (
+      <SuccessCard imageURL={imageUrl} uploadAgain={resetPageState} />
+    );
 
   return (
     <>
