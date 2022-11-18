@@ -19,7 +19,7 @@ const Home: NextPage = () => {
       const formData = new FormData();
 
       formData.append("image", file);
-      fetch("http://localhost:3000/api/upload", {
+      fetch("https://image-uploader-phi-six.vercel.app/api/upload", {
         method: "POST",
         body: formData,
       })
