@@ -4,6 +4,8 @@ import {v2 as cloudinary} from "cloudinary";
 import nc from "next-connect";
 import multer from "multer";
 
+import {removeFile} from "@/server/utils/removeLocalFile";
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -50,6 +52,8 @@ apiRoute.post<ExtendedRequest>(async (req, res) => {
       `./public/images/${req.file?.originalname}`,
       options,
     );
+
+    removeFile(req.file?.originalname as string);
 
     return res
       .status(200)
