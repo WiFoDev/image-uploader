@@ -3,6 +3,7 @@ import type {NextApiRequest, NextApiResponse} from "next";
 import {v2 as cloudinary} from "cloudinary";
 import nc from "next-connect";
 import multer from "multer";
+import cors from "cors";
 
 import {removeFile} from "@/server/utils/removeLocalFile";
 
@@ -32,6 +33,8 @@ const upload = multer({
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
 });
+
+apiRoute.use(cors());
 
 apiRoute.use(upload.single("image"));
 
